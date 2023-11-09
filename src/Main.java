@@ -52,6 +52,29 @@ public class Main {
 					Article article = articles.get(i);
 					System.out.printf("%d	/	%s\n", article.id, article.title);
 				}
+			} else if (cmd.startsWith("article detail")) {
+				String[] cmdBits = cmd.split("  ");
+
+				int id = Integer.parseInt(cmdBits[2]);
+				
+				Article foundArticle = null;
+
+				for (Article article : articles) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+
+				}
+				
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+					continue;
+					
+				}
+				System.out.println("번호: %d\n" + foundArticle.id);
+				System.out.println("제목: %d\n" + foundArticle.title);
+				System.out.println("내용 : %d\n" + foundArticle.content);
 
 			} else {
 
