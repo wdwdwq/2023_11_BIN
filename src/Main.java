@@ -53,10 +53,10 @@ public class Main {
 					System.out.printf("%d	/	%s\n", article.id, article.title);
 				}
 			} else if (cmd.startsWith("article detail")) {
-				String[] cmdBits = cmd.split("  ");
+				String[] cmdBits = cmd.split(" ");
 
 				int id = Integer.parseInt(cmdBits[2]);
-				
+
 				Article foundArticle = null;
 
 				for (Article article : articles) {
@@ -66,16 +66,37 @@ public class Main {
 					}
 
 				}
-				
+
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 					continue;
-					
-				}
-				System.out.println("번호: %d\n" + foundArticle.id);
-				System.out.println("제목: %d\n" + foundArticle.title);
-				System.out.println("내용 : %d\n" + foundArticle.content);
 
+				}
+				System.out.printf("번호: %d\n", foundArticle.id);
+				System.out.printf("제목: %s\n", foundArticle.title);
+				System.out.printf("내용 : %s\n", foundArticle.content);
+
+			} else if (cmd.startsWith("article delete")) {
+				String[] cmdBits = cmd.split(" ");
+				int id = Integer.parseInt(cmdBits[2]);
+
+				Article foundArticle = null;
+
+				for (Article article : articles) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+					continue;
+				}
+				
+				articles.remove(foundArticle);
+				System.out.printf("%d 게시물이 삭제되었습니다\n",id);
+				
 			} else {
 
 				System.out.println("올바른 명령어를 입력해주세요");
