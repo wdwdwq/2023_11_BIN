@@ -19,6 +19,11 @@ public class ArticleController {
 		this.sc = sc;
 	}
 	
+	public void doAction(String methodName) {
+		
+		
+	}
+	
 	public void doWrite() {
 		lastArticleId++;
 
@@ -138,4 +143,6 @@ public class ArticleController {
 		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목3", "내용3"));
 		System.out.println("테스트용 게시물이 생성되었습니다");
 	}
+
+
 }
