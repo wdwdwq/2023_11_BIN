@@ -3,6 +3,7 @@ package example;
 import java.util.Scanner;
 
 import example.controller.ArticleController;
+import example.controller.Controller;
 import example.controller.MemberController;
 
 public class App {
@@ -39,29 +40,21 @@ public class App {
 			String controllerName = cmdBits[0];
 			String methodrName = cmdBits[1];
 			
+			
+			Controller controller = null;
+			
 			if(controllerName.equals("member")) {
-				memberController.doAction(cmd, methodrName);
+				controller = memberController;
 			} else if(controllerName.equals("article")) {
-				articleController.doAction(cmd, methodrName);
+				controller = articleController;
 			} else {
 				System.out.println("존재하지 않는 명령어입니다");
+				continue;
 			}
 			
-	//		if (cmd.equals("member join")) {
-	//			memberController.doJoin();
-	//		} else if (cmd.equals("article write")) {
-	//			articleController.doWrite();
-	//		} else if (cmd.startsWith("article list")) {
-	//			articleController.showList(cmd);
-	//		} else if (cmd.startsWith("article detail ")) {
-	//			articleController.showDetail(cmd);
-	//		} else if (cmd.startsWith("article modify ")) {
-	//			articleController.doModify(cmd);
-	//		} else if (cmd.startsWith("article delete ")) {
-	//			articleController.doDelete(cmd);
-	//		} else {
-	//			System.out.println("존재하지 않는 명령어입니다");
-	//		}
+			controller.doAction(cmd, methodrName);
+			
+
 		}
 
 		System.out.println("== 프로그램 끝 ==");
