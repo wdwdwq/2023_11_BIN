@@ -8,11 +8,11 @@ import example.dto.Article;
 import example.util.Util;
 
 public class ArticleController extends Controller {
-
+	
 	private List<Article> articles;
 	private int lastArticleId;
 	private String cmd;
-
+	
 	public ArticleController(Scanner sc) {
 		this.articles = new ArrayList<>();
 		this.lastArticleId = 0;
@@ -24,7 +24,8 @@ public class ArticleController extends Controller {
 	public void doAction(String cmd, String methodName) {
 		
 		this.cmd = cmd;
-		switch(methodName) {
+		
+		switch (methodName) {
 		case "write":
 			doWrite();
 			break;
@@ -32,7 +33,7 @@ public class ArticleController extends Controller {
 			showList();
 			break;
 		case "detail":
-			showDetail(); 
+			showDetail();
 			break;
 		case "modify":
 			doModify();
@@ -44,10 +45,15 @@ public class ArticleController extends Controller {
 			System.out.println("존재하지 않는 명령어 입니다");
 			break;
 		}
-} 
-
+	}
+	
 	private void doWrite() {
-
+		
+		if (isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요");
+			return;
+		}
+		
 		lastArticleId++;
 
 		System.out.printf("제목 : ");
@@ -55,54 +61,52 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String content = sc.nextLine();
 
-		Article article = new Article(lastArticleId, Util.getDateStr(), title, content);
+		Article article = new Article(lastArticleId, Util.getDateStr(), loginedMember.id, title, content);
 
 		this.articles.add(article);
 
 		System.out.println(lastArticleId + "번 게시물이 생성되었습니다");
-
 	}
-
+	
 	private void showList() {
 		if (this.articles.size() == 0) {
 			System.out.println("게시물이 존재하지 않습니다");
 			return;
 		}
-
+		
 		String searchKeyword = cmd.substring("article list".length()).trim();
 
 		List<Article> printArticles = this.articles;
-
+		
 		if (searchKeyword.length() > 0) {
-
+			
 			System.out.println("검색어 : " + searchKeyword);
-
+			
 			printArticles = new ArrayList<>();
-
+			
 			for (Article article : articles) {
 				if (article.title.contains(searchKeyword)) {
 					printArticles.add(article);
 				}
 			}
-
+			
 			if (printArticles.size() == 0) {
 				System.out.println("검색결과가 없습니다");
 				return;
 			}
 		}
-
-		System.out.println("번호	/	제목	/		작성일");
+		
+		System.out.println("번호	/		작성일		/	제목	/	작성자");
 		for (int i = printArticles.size() - 1; i >= 0; i--) {
 			Article article = printArticles.get(i);
-			System.out.printf("%d	/	%s	/	%s\n", article.id, article.title, article.regDate);
-
+			System.out.printf("%d	/	%s	/	%s	/	%s\n", article.id, article.regDate, article.title, article.memberId);
 		}
 	}
 
 	private void showDetail() {
 		String[] cmdBits = cmd.split(" ");
 		
-		if(cmdBits.length == 2) {
+		if (cmdBits.length == 2) {
 			System.out.println("명령어를 확인해주세요");
 			return;
 		}
@@ -118,15 +122,15 @@ public class ArticleController extends Controller {
 
 		System.out.printf("번호 : %d\n", foundArticle.id);
 		System.out.printf("작성일 : %s\n", foundArticle.regDate);
+		System.out.printf("작성자 : %d\n", foundArticle.memberId);
 		System.out.printf("제목 : %s\n", foundArticle.title);
 		System.out.printf("내용 : %s\n", foundArticle.content);
-
 	}
-
+	
 	private void doModify() {
 		String[] cmdBits = cmd.split(" ");
 		
-		if(cmdBits.length == 2) {
+		if (cmdBits.length == 2) {
 			System.out.println("명령어를 확인해주세요");
 			return;
 		}
@@ -149,13 +153,12 @@ public class ArticleController extends Controller {
 		foundArticle.content = content;
 
 		System.out.printf("%d번 게시물을 수정했습니다\n", id);
-
 	}
-
+	
 	private void doDelete() {
 		String[] cmdBits = cmd.split(" ");
 		
-		if(cmdBits.length == 2) {
+		if (cmdBits.length == 2) {
 			System.out.println("명령어를 확인해주세요");
 			return;
 		}
@@ -171,9 +174,8 @@ public class ArticleController extends Controller {
 
 		this.articles.remove(foundArticle);
 		System.out.printf("%d번 게시물을 삭제했습니다\n", id);
-
 	}
-
+	
 	private Article getArticleById(int id) {
 		for (Article article : this.articles) {
 			if (article.id == id) {
@@ -185,12 +187,9 @@ public class ArticleController extends Controller {
 	
 	@Override
 	public void makeTestData() {
-		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목1", "내용1"));
-		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목2", "내용2"));
-		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목3", "내용3"));
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), 2, "제목1", "내용1"));
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), 3, "제목2", "내용2"));
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), 2, "제목3", "내용3"));
 		System.out.println("테스트용 게시물이 생성되었습니다");
 	}
-
-
-
 }
