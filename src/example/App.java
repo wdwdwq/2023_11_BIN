@@ -7,17 +7,19 @@ import example.controller.Controller;
 import example.controller.MemberController;
 
 public class App {
-	
+
+
 	public void run() {
 		System.out.println("== 프로그램 시작 ==");
-		
+
 		Scanner sc = new Scanner(System.in);
 		
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
-
-		articleController.makeTestData();
 		
+		articleController.makeTestData();
+		memberController.makeTestData();
+
 		while (true) {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine().trim();
@@ -30,30 +32,30 @@ public class App {
 			if (cmd.equals("exit")) {
 				break;
 			}
+			
 			String[] cmdBits = cmd.split(" ");
 			
 			if(cmdBits.length == 1) {
 				System.out.println("명령어를 확인해주세요");
 				continue;
+				
 			}
 			
 			String controllerName = cmdBits[0];
-			String methodrName = cmdBits[1];
+			String methodName = cmdBits[1];
 			
-			
-			Controller controller = null;
+			Controller controller = null; 
 			
 			if(controllerName.equals("member")) {
 				controller = memberController;
 			} else if(controllerName.equals("article")) {
-				controller = articleController;
+				controller = articleController;			
 			} else {
 				System.out.println("존재하지 않는 명령어입니다");
 				continue;
 			}
 			
-			controller.doAction(cmd, methodrName);
-			
+			controller.doAction(cmd, methodName);
 
 		}
 
@@ -61,4 +63,5 @@ public class App {
 
 		sc.close();
 	}
+
 }
