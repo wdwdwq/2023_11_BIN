@@ -5,20 +5,25 @@ import java.util.List;
 
 import example.dto.Member;
 
-public class MemberDao {
+public class MemberDao extends Dao {
 	private List<Member> members;
-
-	public MemberDao() {
+	
+	public MemberDao () {
 		this.members = new ArrayList<>();
 	}
 
+	public int getLastMemberId() {
+		return this.lastId + 1;
+	}
+	
 	public void doJoin(Member member) {
 		this.members.add(member);
+		this.lastId++;
 	}
-
+	
 	public Member getMemberByLoginId(String loginId) {
 		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
+			if(member.loginId.equals(loginId)) {
 				return member;
 			}
 		}
